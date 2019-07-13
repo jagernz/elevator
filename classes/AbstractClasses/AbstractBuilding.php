@@ -31,4 +31,9 @@ abstract class AbstractBuilding
 
         return count($this->persons);
     }
+
+    public function getPerson()
+    {
+        return $this->persons;
+    }
 }

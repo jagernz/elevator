@@ -7,6 +7,7 @@ use Elevator\Classes\Floor\Floor1;
 use Elevator\Classes\Floor\Floor2;
 use Elevator\Classes\Floor\Floor3;
 use Elevator\Classes\Floor\Floor4;
+use Elevator\Classes\Output\Output;
 use Elevator\Classes\Persons\Person1;
 use Elevator\Classes\Persons\Person2;
 use Elevator\Classes\Persons\Person3;
@@ -17,6 +18,7 @@ class Control
 
     private $settings;
     private $elevator;
+    private $currentFloor = 1;
 
     private function __construct(){}
 
@@ -58,15 +60,68 @@ class Control
             $floor3,
             $floor4
         ];
+
+        Output::displayInfo('We have provided default settings, every Person on their Floor');
     }
 
-    public function getSettings()
+    private function getSettings()
     {
         return $this->settings;
     }
 
-    public function getElevator()
+    private function getElevator()
     {
         return $this->elevator;
+    }
+
+    public function parseCommands(array $commands)
+    {
+        if ( ! is_array($commands) ) {
+            throw new \UnexpectedValueException('The value entered must be an integer');
+        }
+
+        foreach ($commands as $command) {
+            $this->executeCommand($command);
+        }
+    }
+
+    private function executeCommand($command)
+    {
+        switch ($command){
+
+            case 'execute_first_person_command':
+
+                Output::displayInfo(' => First command');
+
+                foreach ($this->settings as $floor) {
+
+                    if (get_class($floor) == Floor1::class) {
+
+                        $person = $floor->getPerson();
+
+                        $result = $person[0]->pushDown($this->currentFloor);
+
+                        if ($result) {
+                            $this->getElevator()->getCommandFromControlModule('open', $this->currentFloor);
+                        }
+
+                        $this->getElevator()->addPerson($person[0]);
+
+                        $this->getElevator()
+                            ->getPerson()
+                            ->pushButton(4);
+
+
+
+                    }
+
+                }
+
+                break;
+            case 'execute_second_person_command':
+                break;
+            case 'execute_third_person_command':
+                break;
+        }
     }
 }

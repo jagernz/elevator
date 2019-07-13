@@ -2,18 +2,26 @@
 
 namespace Elevator\Classes\AbstractClasses;
 
+use Elevator\Classes\Output\Output;
+
 abstract class AbstractPerson
 {
-    private $floorNumber = false;
+    protected $floorNumber = 1;
 
     public function pushUp()
     {
 
     }
 
-    public function pushDown()
+    public function pushDown($currentFloor)
     {
+        Output::displayInfo($this->getName() . ' : pushed button \'Down\' on the ' . $currentFloor . ' floor');
 
+        if ($this->floorNumber === $currentFloor) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -26,11 +34,20 @@ abstract class AbstractPerson
             throw new \UnexpectedValueException('The value entered must be an integer');
         }
 
+        if ($button > $this->floorNumber) {
+            Output::displayInfo('close', $this->floorNumber);
+        }
+
         $this->floorNumber = $button;
     }
 
     public function pushStop()
     {
 
+    }
+
+    public function __invoke()
+    {
+        return $this->getName();
     }
 }
