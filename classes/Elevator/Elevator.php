@@ -25,8 +25,18 @@ class Elevator extends AbstractBuilding
 
     public function getCommandFromControlModule($command, $currentFloor)
     {
-        if ( $command == 'open' && $this->currentElevatorFloor == $currentFloor) {
+        if ( $command == 'open' && $this->getCurrentElevatorFloor() == $currentFloor) {
             Output::displayInfo('Elevator\'s door opened');
+        }
+        
+        if ( $command == 'move' && $this->getCurrentElevatorFloor() == $currentFloor && $this->getPerson() !== null) {
+            Output::displayInfo('Elevator has delivered ' . $this->getPerson()[0]() . ' to ' . $currentFloor . ' floor');
+        }
+
+        if ($command == 'close' && $this->getCurrentElevatorFloor() < $currentFloor) {
+            Output::displayInfo('Elevator\'s door closed and Elevator moves up to ' . $currentFloor . ' floor');
+            $this->currentElevatorFloor = $currentFloor;
+            return true;
         }
     }
 
@@ -41,4 +51,5 @@ class Elevator extends AbstractBuilding
 
         return parent::addPerson($person);
     }
+
 }

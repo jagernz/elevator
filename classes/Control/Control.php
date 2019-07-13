@@ -87,11 +87,11 @@ class Control
 
     private function executeCommand($command)
     {
-        switch ($command){
+        switch ($command) {
 
             case 'execute_first_person_command':
 
-                Output::displayInfo(' => First command');
+                Output::displayInfo(' => First command: ');
 
                 foreach ($this->settings as $floor) {
 
@@ -99,20 +99,24 @@ class Control
 
                         $person = $floor->getPerson();
 
-                        $result = $person[0]->pushDown($this->currentFloor);
+                        $result = $person[0]
+                            ->pushDown($this->currentFloor);
 
                         if ($result) {
                             $this->getElevator()->getCommandFromControlModule('open', $this->currentFloor);
                         }
 
+                        $floor->reMovePerson($person[0]);
+
                         $this->getElevator()->addPerson($person[0]);
 
-                        $this->getElevator()
-                            ->getPerson()
-                            ->pushButton(4);
+                        $this->getElevator()->getPerson()[0]->pushButton(4);
 
+                        $this->getElevator()->getCommandFromControlModule('close', 4);
 
+                        $this->getElevator()->getCommandFromControlModule('move', 4);
 
+                        $this->getElevator()->getCommandFromControlModule('open', 4);
                     }
 
                 }

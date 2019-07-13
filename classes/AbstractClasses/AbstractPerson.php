@@ -15,7 +15,7 @@ abstract class AbstractPerson
 
     public function pushDown($currentFloor)
     {
-        Output::displayInfo($this->getName() . ' : pushed button \'Down\' on the ' . $currentFloor . ' floor');
+        Output::displayInfo($this->getName() . ' pushed button \'Down\' on the ' . $currentFloor . ' floor');
 
         if ($this->floorNumber === $currentFloor) {
             return true;
@@ -34,11 +34,7 @@ abstract class AbstractPerson
             throw new \UnexpectedValueException('The value entered must be an integer');
         }
 
-        if ($button > $this->floorNumber) {
-            Output::displayInfo('close', $this->floorNumber);
-        }
-
-        $this->floorNumber = $button;
+        Output::displayInfo($this->getName() . ' pushed button \'' . $button . '\'');
     }
 
     public function pushStop()
