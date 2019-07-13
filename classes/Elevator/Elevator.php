@@ -1,6 +1,8 @@
 <?php
 
-namespace Elevator\Classes\AbstractClasses;
+namespace Elevator\Classes\Elevator;
+
+use Elevator\Classes\AbstractClasses\AbstractBuilding;
 
 class Elevator extends AbstractBuilding
 {
